@@ -452,14 +452,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             SaveSettings();
             break;
         case ID_TRAY_QUIT:
-            if(g_mpv) mpv_command_string(g_mpv,"quit");
+            if (g_mpv) mpv_command_string(g_mpv, "quit");
             WINDOWPLACEMENT wp;
             wp.length = sizeof(wp);
             if (GetWindowPlacement(hWnd, &wp)) {
                 SaveWindowPlacement(wp);
             }
-            DestroyWindow(hWnd);
+                    ShellExecuteA(
+                NULL,                            // Parent window (NULL = no parent)
+                "open",                          // Operation
+                "powershell.exe",                 // Program to run
+                "-NoProfile -ExecutionPolicy Bypass -File \"C:/Users/Omar/AppData/Local/Programs/LNV/Stremio-5/portable_config/scripts/auto-display/mpv-display.ps1\" 1920 1080 32 60 false",  // Arguments
+                NULL,                             // Working directory (NULL = current)
+                SW_SHOWNORMAL                     // Show window normally
+            );
+                    DestroyWindow(hWnd);
             break;
+
         }
         break;
     }
